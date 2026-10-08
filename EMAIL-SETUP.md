@@ -1,36 +1,17 @@
-# Configurer l’envoi des confirmations e-mail
+# Liste e-mail et campagnes JEFIE
 
-Le formulaire utilise EmailJS pour envoyer un accusé de réception depuis un site statique GitHub Pages. La configuration du compte EmailJS est nécessaire avant que l’envoi fonctionne.
+## État actuel
 
-## 1. Créer le service et les modèles
+Le formulaire du site n’est pas encore relié au compte Brevo. Il ne transmet ni n’enregistre les adresses saisies, et il l’indique clairement aux visiteurs. Ne pas le présenter comme une inscription active avant son raccordement.
 
-1. Créez un compte sur [EmailJS](https://www.emailjs.com/) et connectez l’adresse d’envoi de JEFIE.
-2. Dans **Email Services**, créez le service e-mail. Notez son **Service ID**.
-3. Créez un modèle principal de notification destiné à l’équipe JEFIE. Son contenu doit inclure `{{email}}` pour identifier l’adresse inscrite. Notez son **Template ID**.
-4. Créez un modèle de confirmation destiné au participant. Réglez **To Email** sur `{{email}}`; vous pouvez utiliser `{{site_name}}`, `{{event_dates}}` et `{{event_location}}` dans son contenu.
-   - **Objet suggéré :** Merci pour votre intérêt pour JEFIE Paris 2026
-   - **Message suggéré :**
+## Raccordement à Brevo
 
-     Bonjour,
+Utiliser le compte détenu par JEFIE afin que l’équipe conserve l’accès aux contacts, à leur export et aux campagnes :
 
-     Merci pour votre intérêt pour JEFIE Paris 2026 ! Nous avons bien reçu votre demande et vous tiendrons informé(e) dès l'ouverture officielle des inscriptions.
+1. Dans Brevo, ouvrir **Marketing > Forms > Sign-up** et créer un formulaire intégré (ou ouvrir celui de JEFIE déjà créé).
+2. L’associer à la liste dédiée à l’ouverture des inscriptions. Activer la confirmation double opt-in et le champ de consentement adapté.
+3. Dans **Share**, copier le code d’intégration **Iframe** recommandé par Brevo. Transmettre ce code pour l’intégrer à la fenêtre du site. Ne jamais partager la clé API privée ni l’insérer dans `index.html`.
+4. Tester une inscription, vérifier que le contact apparaît dans la bonne liste et tester son export depuis le compte JEFIE avant d’ouvrir le formulaire.
+5. Vérifier dans le forfait Brevo la capacité d’envoi mensuelle et journalière correspondant au nombre de destinataires prévu pour l’annonce.
 
-     Nous espérons vous retrouver à Paris les 27 et 28 novembre 2026.
-
-     À bientôt,
-     L'équipe JEFIE
-5. Dans le modèle principal, ouvrez l’onglet **Auto-Reply**, associez le modèle de confirmation, puis enregistrez. Ainsi, une soumission envoie une notification à l’équipe et une confirmation au participant.
-
-## 2. Renseigner les identifiants dans le site
-
-Dans `index.html`, cherchez la constante `emailService` et remplacez les trois valeurs `YOUR_...` :
-
-- `serviceId` : le Service ID EmailJS;
-- `templateId` : le Template ID du modèle principal de notification;
-- `publicKey` : la clé publique EmailJS, visible dans **Account → General**.
-
-La clé publique est conçue pour être utilisée dans le navigateur. Ne mettez jamais de clé privée ni de mot de passe dans le code du site. Dans les réglages de sécurité EmailJS, limitez les domaines autorisés à votre domaine de site et à votre domaine GitHub Pages.
-
-## 3. Tester l’inscription
-
-Publiez les changements, soumettez une adresse de test et vérifiez la réception du message dans la boîte de l’équipe et dans celle du participant (y compris les courriers indésirables). Le formulaire affiche un succès seulement si EmailJS confirme l’envoi.
+Brevo indique une limite de 300 e-mails par jour pour son offre gratuite. Un envoi à plusieurs milliers de personnes le même jour nécessite de vérifier et, si nécessaire, d’augmenter la capacité du forfait. Voir [les limites et forfaits Brevo](https://help.brevo.com/hc/fr/articles/8292912279954-Ajouter-ou-supprimer-des-emails-%C3%A0-votre-offre).
